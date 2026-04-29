@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://butkfxuqftbed"]
+
+[ext_resource type="Script" uid="uid://dw3as35t6i8of" path="res://player.gd" id="1_onrkg"]
+[ext_resource type="PackedScene" uid="uid://c8qfgtbsgpr4q" path="res://bullet.tscn" id="2_i3pqv"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_uiq0p"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k8i8m"]
+albedo_color = Color(0.17734846, 0.34382895, 0.49956876, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0xm2m"]
+
+[node name="Player" type="Node3D" unique_id=2740909]
+script = ExtResource("1_onrkg")
+bullet_scene = ExtResource("2_i3pqv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1908939200]
+transform = Transform3D(0.99999976, 0, 0, 0, 0.99999976, 0, 0, 0, 1, 0, 0, 0.2583139)
+mesh = SubResource("BoxMesh_uiq0p")
+surface_material_override/0 = SubResource("StandardMaterial3D_k8i8m")
+
+[node name="Hitbox" type="Area3D" parent="." unique_id=906394487]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.27849674, 0)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox" unique_id=693933727]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.26760495, 0)
+shape = SubResource("BoxShape3D_0xm2m")

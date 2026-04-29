@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://b84pbynwtkcjs"]
+
+[ext_resource type="Script" uid="uid://dclxt6ui24ds3" path="res://main.gd" id="1_1bvp3"]
+[ext_resource type="Script" uid="uid://bmuhyevbwn8if" path="res://path_follow_3d.gd" id="1_84x8b"]
+[ext_resource type="PackedScene" uid="uid://butkfxuqftbed" path="res://player.tscn" id="2_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://db1s1cqn32530" path="res://target.tscn" id="4_1bvp3"]
+
+[sub_resource type="Curve3D" id="Curve3D_uiq0p"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -10, 0, 0, 0, 0, 0, 0, 0, 0, -35, 0, 0, 0, 0, 0, 0, 0, 0, -50),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
+
+[node name="Node3D" type="Node3D" unique_id=1476219071]
+script = ExtResource("1_1bvp3")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=283814361]
+transform = Transform3D(-0.99308056, -0.114362024, -0.02669102, -0.0252921, -0.0136662135, 0.9995867, -0.11467953, 0.99334514, 0.010679195, -0.04664266, 3.4612904, 0.023099184)
+light_energy = 5.381
+sky_mode = 1
+
+[node name="Path3D" type="Path3D" parent="." unique_id=395499029]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.27849674, 0)
+curve = SubResource("Curve3D_uiq0p")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="Path3D" unique_id=1843226572]
+transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 1, 0, 0, 0)
+rotation_mode = 4
+script = ExtResource("1_84x8b")
+
+[node name="Camera3D" type="Camera3D" parent="Path3D/PathFollow3D" unique_id=1105639889]
+transform = Transform3D(0.9999619, -0.008726536, 0, 0.008421251, 0.9649798, 0.26218918, -0.0022880032, -0.26217923, 0.9650165, 0, 1.5438776, 2.687449)
+
+[node name="Player" parent="Path3D/PathFollow3D" unique_id=2740909 instance=ExtResource("2_1bvp3")]
+
+[node name="Target" parent="." unique_id=1139198665 instance=ExtResource("4_1bvp3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3394556, 0, -8.501074)
+
+[node name="Target2" parent="." unique_id=2125443413 instance=ExtResource("4_1bvp3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8569828, 0, -6.696122)
+
+[node name="Target3" parent="." unique_id=1837430380 instance=ExtResource("4_1bvp3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5841608, 0, -15.286066)
