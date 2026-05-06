@@ -1,24 +1,48 @@
-# Neon Labyrinth - Podstawowa Mechanika i System Kolizji
+# Neon Labyrinth - Proceduralny Labirynt Nieskończoności
 
 ## Opis projektu
-Projekt jest grą zręcznościową typu Top-Down tworzoną w języku Python. Głównym celem gracza jest sprawne poruszanie się w labiryncie i omijanie przeszkód. Obecna wersja skupia się na implementacji płynnego sterowania oraz fizyki kolizji w przestrzeni 2D.
+Projekt jest zaawansowaną grą zręcznościową typu Top-Down, w której głównym wyzwaniem jest pokonywanie unikalnych, generowanych w czasie rzeczywistym labiryntów. Gra została zaprojektowana z naciskiem na **proceduralną generację treści** oraz **modularną architekturę kodu**.
+
+> **Uwaga:** Projekt ma charakter rozwojowy. Obecna forma nie jest wersją finalną – z tygodnia na tydzień aplikacja będzie modernizowana i wzbogacana o nowe funkcjonalności, mechaniki oraz optymalizacje.
 
 ## Wybrana Technologia
-*   **Silnik:** Raylib (biblioteka `pyray`)
-*   **Język programowania:** Python 3.13
+*   **Język:** Python 3.13
+*   **Biblioteka graficzna:** Raylib (wrapper `pyray`)
+*   **Architektura:** Modularna (podział na moduły logiczne)
 *   **System kontroli wersji:** Git
 
-## Funkcjonalności i wymagania techniczne
-W bieżącej wersji projektu zaimplementowano następujące elementy:
+---
 
-*   **Pętla gry (Game Loop):** Zarządzanie czasem za pomocą `Delta Time`, co zapewnia identyczną prędkość ruchu gracza niezależnie od liczby klatek na sekundę (FPS).
-*   **System Sterowania:** Obsługa wejścia klawiatury (WSAD) umożliwiająca poruszanie się w ośmiu kierunkach.
-*   **Obsługa Kolizji:** Implementacja wykrywania kolizji typu "koło-prostokąt" (`check_collision_circle_rec`).
-*   **Separacja osi ruchu:** Logika ruchu została rozdzielona na oś X oraz Y, co pozwala na płynne ślizganie się gracza po krawędziach ścian zamiast całkowitego blokowania ruchu.
-*   **Środowisko:** Statyczna mapa składająca się z zestawu przeszkód (ścian) definiujących granice gry.
+## Kluczowe Funkcjonalności
+
+### 1. Proceduralna Generacja (Recursive Backtracker)
+W przeciwieństwie do statycznych map, gra wykorzystuje algorytm **Recursive Backtracker** do tworzenia korytarzy.
+*   **Gwarancja przejścia:** Algorytm zawsze generuje spójny labirynt, w którym istnieje co najmniej jedna ścieżka od startu do wyjścia.
+*   **Unikalność:** Każdy poziom jest generowany w locie, co zapewnia nieskończoną regrywalność.
+*   **Struktura:** Parametry są ustawione na generowanie ciasnych korytarzy, co zwiększa poziom trudności.
+
+### 2. Modularna Architektura
+Projekt został zrefaktoryzowany i podzielony na niezależne moduły:
+*   `main.py`: Zarządzanie pętlą główną i obsługą stanów.
+*   `maze_logic.py`: Serce algorytmu generującego.
+*   `constants.py`: Centralne repozytorium ustawień (prędkość, kolory).
+*   `states.py`: Definicja Maszyny Stanów (FSM).
+
+### 3. System Kolizji i Fizyka
+*   **Separacja osi:** Umożliwia płynne ślizganie się gracza po krawędziach ścian.
+*   **Detekcja Circle-to-Rectangle:** Precyzyjne obliczenia kolizji między graczem a blokami labiryntu.
+
+---
+
+## Sterowanie
+*   **WSAD:** Poruszanie się postacią.
+*   **ENTER:** Start gry z poziomu menu.
+*   **Zielone Pole (Exit):** Cel poziomu. Wejście w nie generuje nowy labirynt.
+
+---
 
 ## Instrukcja uruchomienia
-1. Upewnij się, że masz zainstalowanego Pythona w wersji 3.10 lub nowszej.
-2. Zainstaluj wymaganą bibliotekę komendą:
-   ```bash
-   pip install raylib
+
+1.  Zainstaluj wymaganą bibliotekę:
+    ```bash
+    pip install raylib
