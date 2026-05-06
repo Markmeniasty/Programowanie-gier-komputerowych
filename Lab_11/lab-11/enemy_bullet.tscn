@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://cw7nv5ex41pff"]
+
+[ext_resource type="Script" uid="uid://bqr0kd25oakar" path="res://bullet.gd" id="1_1xapl"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_y1jqf"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_su24e"]
+
+[node name="Enemybullet" type="Area3D" unique_id=2022557187]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 0, 0)
+collision_layer = 8
+script = ExtResource("1_1xapl")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1764031137]
+mesh = SubResource("SphereMesh_y1jqf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=919898492]
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0, 0)
+shape = SubResource("SphereShape3D_su24e")

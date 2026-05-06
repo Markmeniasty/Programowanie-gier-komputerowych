@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://db1s1cqn32530"]
+
+[ext_resource type="Script" uid="uid://beel6tqkh54hd" path="res://target.gd" id="1_t2jmu"]
+[ext_resource type="PackedScene" uid="uid://omvxu8jhckrb" path="res://death_particles.tscn" id="2_e1yvt"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_e1yvt"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5ebp1"]
+
+[node name="Target" type="Area3D" unique_id=1139198665]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("1_t2jmu")
+death_effect = ExtResource("2_e1yvt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=547048003]
+mesh = SubResource("BoxMesh_e1yvt")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1269425695]
+shape = SubResource("BoxShape3D_5ebp1")
