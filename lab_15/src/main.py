@@ -1,69 +1,96 @@
 import pyray as pr
 
 
+# --- LAB 12: Maszyna Stanów (FSM) ---
+class GameState:
+    MENU = 0
+    GAMEPLAY = 1
+    GAME_OVER = 2
+
+
 def main():
-    # --- Konfiguracja okna ---
-    screen_width = 800
-    screen_height = 600
-    pr.init_window(screen_width, screen_height, "Neon Labyrinth - Lab 11: Kolizje")
+    # Inicjalizacja (Lab 10/11)
+    screen_width, screen_height = 800, 600
+    pr.init_window(screen_width, screen_height, "Neon Labyrinth - Lab 12 FSM")
     pr.set_target_fps(60)
 
-    # --- Dane Gracza ---
-    # Używamy Vector2 dla precyzyjnych obliczeń pozycji
+    # --- DEFINICJA BEZPIECZNYCH KOLORÓW ---
+    COLOR_CYAN = pr.Color(0, 255, 255, 255)
+    COLOR_WHITE = pr.Color(255, 255, 255, 255)
+    COLOR_RED = pr.Color(230, 41, 55, 255)
+    COLOR_GREEN = pr.Color(0, 228, 48, 255)
+    COLOR_DARK_GRAY = pr.Color(80, 80, 80, 255)
+
+    # --- Stan początkowy ---
+    current_state = GameState.MENU
+
+    # Dane gracza
     player_pos = pr.Vector2(100.0, 100.0)
     player_radius = 12.0
     player_speed = 250.0
-    player_color = pr.Color(0, 255, 255, 255)  # Cyan
 
-    # --- Lab 11: Definicja Ścian ---
-    # Rectangle(x, y, szerokość, wysokość)
+    # Przeszkody (Lab 11)
     walls = [
-        pr.Rectangle(200, 150, 400, 40),  # Przeszkoda górna
-        pr.Rectangle(400, 300, 50, 200),  # Przeszkoda pionowa
-        pr.Rectangle(0, 0, 800, 10),  # Granica górna
-        pr.Rectangle(0, 590, 800, 10),  # Granica dolna
-        pr.Rectangle(0, 0, 10, 600),  # Granica lewa
-        pr.Rectangle(790, 0, 10, 600)  # Granica prawa
+        pr.Rectangle(200, 150, 400, 40),
+        pr.Rectangle(400, 300, 50, 200),
+        pr.Rectangle(0, 0, 800, 10),
+        pr.Rectangle(0, 590, 800, 10),
+        pr.Rectangle(0, 0, 10, 600),
+        pr.Rectangle(790, 0, 10, 600)
     ]
 
     while not pr.window_should_close():
-        # Delta time zapewnia taką samą prędkość niezależnie od klatek na sekundę
         dt = pr.get_frame_time()
 
-        # Zapisujemy pozycję przed wykonaniem ruchu (do cofnięcia w razie kolizji)
-        old_pos = pr.Vector2(player_pos.x, player_pos.y)
+        # --- LOGIKA MASZYNY STANÓW ---
+        if current_state == GameState.MENU:
+            if pr.is_key_pressed(pr.KeyboardKey.KEY_ENTER):
+                current_state = GameState.GAMEPLAY
+                player_pos = pr.Vector2(100, 100)
 
-        # 1. Obsługa wejścia i kolizji w osi Y
-        if pr.is_key_down(pr.KeyboardKey.KEY_W): player_pos.y -= player_speed * dt
-        if pr.is_key_down(pr.KeyboardKey.KEY_S): player_pos.y += player_speed * dt
+        elif current_state == GameState.GAMEPLAY:
+            old_pos = pr.Vector2(player_pos.x, player_pos.y)
 
-        for wall in walls:
-            if pr.check_collision_circle_rec(player_pos, player_radius, wall):
-                player_pos.y = old_pos.y  # Cofnij tylko ruch pionowy
+            # Ruch w Y
+            if pr.is_key_down(pr.KeyboardKey.KEY_W): player_pos.y -= player_speed * dt
+            if pr.is_key_down(pr.KeyboardKey.KEY_S): player_pos.y += player_speed * dt
+            for wall in walls:
+                if pr.check_collision_circle_rec(player_pos, player_radius, wall):
+                    # Sprawdzamy czy to ściana wewnętrzna (śmierć) czy zewnętrzna (blokada)
+                    if walls.index(wall) < 2:
+                        current_state = GameState.GAME_OVER
+                    player_pos.y = old_pos.y
 
-        # 2. Obsługa wejścia i kolizji w osi X
-        if pr.is_key_down(pr.KeyboardKey.KEY_A): player_pos.x -= player_speed * dt
-        if pr.is_key_down(pr.KeyboardKey.KEY_D): player_pos.x += player_speed * dt
+            # Ruch w X
+            if pr.is_key_down(pr.KeyboardKey.KEY_A): player_pos.x -= player_speed * dt
+            if pr.is_key_down(pr.KeyboardKey.KEY_D): player_pos.x += player_speed * dt
+            for wall in walls:
+                if pr.check_collision_circle_rec(player_pos, player_radius, wall):
+                    if walls.index(wall) < 2:
+                        current_state = GameState.GAME_OVER
+                    player_pos.x = old_pos.x
 
-        for wall in walls:
-            if pr.check_collision_circle_rec(player_pos, player_radius, wall):
-                player_pos.x = old_pos.x  # Cofnij tylko ruch poziomy
+        elif current_state == GameState.GAME_OVER:
+            if pr.is_key_pressed(pr.KeyboardKey.KEY_R):
+                current_state = GameState.MENU
 
-        # --- Rysowanie ---
+        # --- RYSOWANIE ---
         pr.begin_drawing()
         pr.clear_background(pr.BLACK)
 
-        # Rysowanie wszystkich ścian
-        for wall in walls:
-            pr.draw_rectangle_rec(wall, pr.DARKGRAY)
-            pr.draw_rectangle_lines_ex(wall, 1, pr.GRAY)
+        if current_state == GameState.MENU:
+            pr.draw_text("NEON LABYRINTH", 180, 220, 50, COLOR_CYAN)
+            pr.draw_text("Nacisnij [ENTER], aby zaczac", 240, 310, 20, COLOR_WHITE)
 
-        # Rysowanie gracza
-        pr.draw_circle_v(player_pos, player_radius, player_color)
+        elif current_state == GameState.GAMEPLAY:
+            for wall in walls:
+                pr.draw_rectangle_rec(wall, COLOR_DARK_GRAY)
+            pr.draw_circle_v(player_pos, player_radius, COLOR_CYAN)
+            pr.draw_text("Grasz! Unikaj srodkowych scian.", 20, 20, 20, COLOR_GREEN)
 
-        # Teksty pomocnicze
-        pr.draw_text("System kolizji", 20, 20, 20, pr.RAYWHITE)
-        pr.draw_text("Testuj ślizganie się po krawędziach ścian", 20, 50, 16, pr.GRAY)
+        elif current_state == GameState.GAME_OVER:
+            pr.draw_text("KONIEC GRY", 240, 220, 50, COLOR_RED)
+            pr.draw_text("Nacisnij [R], aby sprobowac ponownie", 210, 310, 20, COLOR_WHITE)
 
         pr.end_drawing()
 
