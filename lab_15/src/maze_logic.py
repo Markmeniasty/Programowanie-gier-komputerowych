@@ -48,3 +48,20 @@ def load_from_grid(grid):
             elif char == "E":
                 exit_rec = rect
     return walls, player_start, exit_rec
+
+
+def get_random_spawn_points(grid, count):
+    points = []
+    rows = len(grid)
+    cols = len(grid[0])
+
+    # Szukamy pustych kafelków (nie ściana, nie start, nie wyjście)
+    empty_cells = []
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == " ":
+                empty_cells.append(pr.Vector2(c * TILE_SIZE + TILE_SIZE / 2, r * TILE_SIZE + TILE_SIZE / 2))
+
+    if len(empty_cells) > count:
+        points = random.sample(empty_cells, count)
+    return points
