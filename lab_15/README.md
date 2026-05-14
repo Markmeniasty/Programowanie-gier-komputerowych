@@ -1,9 +1,50 @@
-# Neon Labyrinth - Proceduralny Labirynt Nieskończoności
+# Neon Labyrinth 
 
-## Opis projektu
-Projekt jest zaawansowaną grą zręcznościową typu Top-Down, w której głównym wyzwaniem jest pokonywanie unikalnych, generowanych w czasie rzeczywistym labiryntów. Gra została zaprojektowana z naciskiem na **proceduralną generację treści** oraz **modularną architekturę kodu**.
+Dynamiczna gra akcji typu **top-down maze shooter** osadzona w neonowym, proceduralnie generowanym świecie. Projekt łączy w sobie elementy eksploracji, survivalu oraz mechanikę walki arcade.
 
-> **Uwaga:** Projekt ma charakter rozwojowy. Obecna forma nie jest wersją finalną – z tygodnia na tydzień aplikacja będzie modernizowana i wzbogacana o nowe funkcjonalności, mechaniki oraz optymalizacje.
+## 🛠️  Aktualizacje 
+
+W fazie rozwoju zaimplementowano kluczowe systemy gry:
+
+### ⚔️ System Walki i Postępu
+* **Combat System**: Gracz posiada możliwość eliminacji przeciwników za pomocą pocisków energetycznych (inicjowanych klawiszem `SPACE`).
+* **Level Scaling**: Poziom trudności rośnie dynamicznie – z każdym ukończonym labiryntem liczba Strażników (Sentinels) ulega zwiększeniu.
+* **Procedural Generation**: Każdy poziom jest unikalnym labiryntem generowanym w czasie rzeczywistym.
+
+### 🧠 Inteligentne AI
+* **Detection & Chase**: Przeciwnicy reagują na obecność gracza. Po przekroczeniu promienia detekcji przechodzą z trybu patrolowania w tryb aktywnego pościgu.
+* **Collision Logic**: Zaawansowane odbicia i blokowanie się AI na ścianach, uniemożliwiające przenikanie przez przeszkody.
+
+### 🎨 Efekty Wizualne i Audio
+* **Dynamic Lighting (Fog of War)**: Gracz widzi tylko ograniczony obszar wokół siebie, co potęguje klimat tajemnicy i zagrożenia.
+* **Cyberpunk UI**: Menu główne wyposażone w efekty glitch, neonową siatkę (Retro Grid) oraz animowane cząsteczki tła.
+* **Audio System**: Implementacja dedykowanej ścieżki dźwiękowej odtwarzanej w pętli.
+
+### 💾 Zarządzanie danymi
+* **Persistent Highscore**: System automatycznie zapisuje i odczytuje najlepszy osiągnięty poziom (Highscore).
+* **Organized Structure**: Dane zapisywane są w dedykowanym folderze `/score`, a muzyka w `/music`.
+
+---
+
+## 🏗️ Plany rozwoju (Work in Progress)
+
+**Uwaga:** Projekt jest w fazie aktywnej deweloperki i **będzie nadal rozszerzany**. W planach znajdują się m.in.:
+* [ ] Implementacja różnych typów przeciwników (strzelających oraz bossów).
+* [ ] System Power-upów (szybszy bieg, większy zasięg światła).
+* [ ] Rozbudowa efektów dźwiękowych (SFX strzału i kolizji).
+* [ ] Dodanie animowanych przejść między poziomami.
+
+---
+
+## 🎮 Sterowanie
+| Klawisz | Akcja |
+| :--- | :--- |
+| **W, S, A, D** | Poruszanie się |
+| **SPACE** | Strzał (Purge System) |
+| **ENTER** | Start gry / Reset po porażce |
+| **ESC** | Wyjście z gry |
+
+---
 
 ## Wybrana Technologia
 *   **Język:** Python 3.13
@@ -12,37 +53,10 @@ Projekt jest zaawansowaną grą zręcznościową typu Top-Down, w której głów
 *   **System kontroli wersji:** Git
 
 ---
-
-## Kluczowe Funkcjonalności
-
-### 1. Proceduralna Generacja (Recursive Backtracker)
-W przeciwieństwie do statycznych map, gra wykorzystuje algorytm **Recursive Backtracker** do tworzenia korytarzy.
-*   **Gwarancja przejścia:** Algorytm zawsze generuje spójny labirynt, w którym istnieje co najmniej jedna ścieżka od startu do wyjścia.
-*   **Unikalność:** Każdy poziom jest generowany w locie, co zapewnia nieskończoną regrywalność.
-*   **Struktura:** Parametry są ustawione na generowanie ciasnych korytarzy, co zwiększa poziom trudności.
-
-### 2. Modularna Architektura
-Projekt został zrefaktoryzowany i podzielony na niezależne moduły:
-*   `main.py`: Zarządzanie pętlą główną i obsługą stanów.
-*   `maze_logic.py`: Serce algorytmu generującego.
-*   `constants.py`: Centralne repozytorium ustawień (prędkość, kolory).
-*   `states.py`: Definicja Maszyny Stanów (FSM).
-
-### 3. System Kolizji i Fizyka
-*   **Separacja osi:** Umożliwia płynne ślizganie się gracza po krawędziach ścian.
-*   **Detekcja Circle-to-Rectangle:** Precyzyjne obliczenia kolizji między graczem a blokami labiryntu.
-
----
-
-## Sterowanie
-*   **WSAD:** Poruszanie się postacią.
-*   **ENTER:** Start gry z poziomu menu.
-*   **Zielone Pole (Exit):** Cel poziomu. Wejście w nie generuje nowy labirynt.
-
----
-
+*Projekt realizowany w ramach przedmiotu: Programowanie gier komputerowych.*
 ## Instrukcja uruchomienia
 
 1.  Zainstaluj wymaganą bibliotekę:
     ```bash
     pip install raylib
+    
